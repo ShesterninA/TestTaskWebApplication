@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Личный кабинет";
+}
+
+<h2>@ViewBag.Title</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <hr />
+    <div>
+        <div class="form-group">
+            <span class="col-md-2 control-label">Имя:</span>
+            <div class="col-md-10">
+                @Html.ActionLink("Изменить имя", "ChangeName")
+            </div>
+        </div>
+        <div class="form-group">
+            <span class="col-md-2 control-label">Фамилия:</span>
+            <div class="col-md-10">
+                @Html.ActionLink("Изменить фамилию", "ChangeLastName")
+            </div>
+        </div>
+        <div class="form-group">
+            <span class="col-md-2 control-label">Пароль:</span>
+            <div class="col-md-10">
+                @Html.ActionLink("Cменить пароль", "ChangePassword")
+            </div>
+        </div>
+    </div>
+</div>

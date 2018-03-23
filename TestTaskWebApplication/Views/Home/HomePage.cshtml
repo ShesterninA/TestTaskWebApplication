@@ -1,0 +1,14 @@
+﻿@model TestTaskWebApplication.ViewModels.HomeViewModel
+@{
+    ViewBag.Title = "Главная страница";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+<h4>Здравствуйте, @Model.Name @Model.LastName!</h4>
+<div>
+    <p>
+        Это ваша домашняя страница. Здесь вы можете видеть информацию предназначенную только вам.
+    </p>
+</div>
