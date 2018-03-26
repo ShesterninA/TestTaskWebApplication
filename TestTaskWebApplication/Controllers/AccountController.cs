@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TestTaskWebApplication.DAL.Entities;
 using TestTaskWebApplication.Models;
+using TestTaskWebApplication.Services;
 using TestTaskWebApplication.ViewModels;
 
 namespace TestTaskWebApplication.Controllers
@@ -17,7 +18,12 @@ namespace TestTaskWebApplication.Controllers
     [Authorize]
     public class AccountController : BaseController
     {
-        public AccountController() { }
+        protected IMailService MailService;
+
+        public AccountController(IMailService mailService)
+        {
+            MailService = mailService;
+        }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : base(userManager, signInManager) { }
 
@@ -93,9 +99,15 @@ namespace TestTaskWebApplication.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code },
                                protocol: Request.Url.Scheme);
 
-                    await UserManager.SendEmailAsync(user.Id, "Подтверждение электронной почты",
-                               "Для завершения регистрации перейдите по ссылке: <a href=\""
-                                                               + callbackUrl + "\">завершить регистрацию</a>");
+                    EmailTemplateViewModel mailTemplateVm = new EmailTemplateViewModel()
+                    {
+                        Name = user.Name,
+                        LastName = user.LastName,
+                        CallbackUrl = callbackUrl
+                    };
+
+                    string templatePath = @"~\Views\EmailTemplates\ConfirmEmailView.cshtml";
+                    await MailService.SendTemplateMessageAsync(model.Email, templatePath, mailTemplateVm, true);
 
                     return View("RegisterConfirmation");
                 }
@@ -146,8 +158,15 @@ namespace TestTaskWebApplication.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Account",
                     new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
 
-                await UserManager.SendEmailAsync(user.Id, "Смена пароля",
-                    "Для смены пароля, перейдите по ссылке <a href=\"" + callbackUrl + "\">сбросить</a>");
+                EmailTemplateViewModel mailTemplateVm = new EmailTemplateViewModel()
+                {
+                    Name = user.Name,
+                    LastName = user.LastName,
+                    CallbackUrl = callbackUrl
+                };
+
+                string templatePath = @"~\Views\EmailTemplates\ForgotPasswordEmailView.cshtml";
+                await MailService.SendTemplateMessageAsync(model.Email, templatePath, mailTemplateVm, true);
 
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -182,7 +201,7 @@ namespace TestTaskWebApplication.Controllers
             {
                 return HttpContext.GetOwinContext().Authentication;
             }
-        }       
+        }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {

@@ -1,0 +1,9 @@
+﻿@model TestTaskWebApplication.ViewModels.EmailTemplateViewModel
+@{
+    ViewBag.Subject = "Подтверждение электронной почты";
+}
+<p>Уважаемый(ая) @Model.Name @Model.LastName!</p>
+<p>
+    Для завершения регистрации перейдите по ссылке:
+    <a href="@Model.CallbackUrl">завершить регистрацию</a>
+</p>

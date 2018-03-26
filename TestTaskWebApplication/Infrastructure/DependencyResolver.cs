@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using TestTaskWebApplication.DAL.Entities;
 using TestTaskWebApplication.Infrastructure.Config;
 using TestTaskWebApplication.Models;
+using TestTaskWebApplication.Services;
 
 namespace TestTaskWebApplication.Infrastructure
 {
@@ -38,8 +39,16 @@ namespace TestTaskWebApplication.Infrastructure
 
         private void AddBindings()
         {
+            Settings settings = Settings.GetSettings();
+
             Kernel.Bind<IdentityDbContext<User>>()
                 .ToConstructor(c => new ApplicationDbContext());
+
+            Kernel.Bind<IMailService>()
+               .ToConstructor(x => new EmailService(settings.Email))
+               .InTransientScope();
+
+            Kernel.Bind<EmailElement>().ToConstant(settings.Email);
         }
     }
 }
