@@ -6,17 +6,13 @@ using System.Web;
 
 namespace TestTaskWebApplication.ViewModels
 {
-    public class RegisterViewModel
+
+    public class RegisterViewModel : LastNameViewModel
     {
         [Required]
         [RegularExpression(@"^[а-яА-Я]+$", ErrorMessage = "Можно использовать только русские буквы")]
         [Display(Name = "Имя")]
         public string Name { get; set; }
-
-        [Required]
-        [RegularExpression(@"^[а-яА-Я]+$", ErrorMessage = "Можно использовать только русские буквы")]
-        [Display(Name = "Фамилия")]
-        public string LastName { get; set; }
 
         [Required]
         [EmailAddress]

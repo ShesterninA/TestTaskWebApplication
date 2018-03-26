@@ -177,6 +177,7 @@
     <Compile Include="Services\IMailService.cs" />
     <Compile Include="Services\MailTemplate.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Base\LastNameViewModel.cs" />
     <Compile Include="ViewModels\EmailTemplates\EmailTemplateViewModel.cs" />
     <Compile Include="ViewModels\Manage\ChangeLastNameViewModel.cs" />
     <Compile Include="ViewModels\Manage\ChangeNameViewModel.cs" />
